@@ -9,33 +9,9 @@ open class Item(
 }
 
 
-class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn, quality) {
+open class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn, quality) {
     fun update() {
-        if (name != "Aged Brie"
-            && name != "Backstage passes to a TAFKAL80ETC concert"
-        ) {
-            if (quality > 0) {
-                if (name != "Sulfuras, Hand of Ragnaros") {
-                    quality = quality - 1
-                }
-            }
-        } else {
-            if (quality < 50) {
-                quality = quality + 1
-                if (name == "Backstage passes to a TAFKAL80ETC concert") {
-                    if (sellIn < 11) {
-                        if (quality < 50) {
-                            quality = quality + 1
-                        }
-                    }
-                    if (sellIn < 6) {
-                        if (quality < 50) {
-                            quality = quality + 1
-                        }
-                    }
-                }
-            }
-        }
+        update1()
         if (name != "Sulfuras, Hand of Ragnaros") {
             sellIn = sellIn - 1
         }
@@ -58,4 +34,40 @@ class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn, qua
         }
     }
 
+    protected open fun update1() {
+        if (quality > 0) {
+            quality = quality - 1
+        }
+    }
 }
+
+class Sulfuras(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, quality) {
+    override fun update1() {}
+}
+
+class Brie(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, quality) {
+    override fun update1() {
+        if (quality < 50) {
+            quality += 1
+        }
+    }
+}
+
+class Pass(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, quality) {
+    override fun update1() {
+        if (quality < 50) {
+            quality = quality + 1
+            if (sellIn < 11) {
+                if (quality < 50) {
+                    quality = quality + 1
+                }
+            }
+            if (sellIn < 6) {
+                if (quality < 50) {
+                    quality = quality + 1
+                }
+            }
+        }
+    }
+}
+
