@@ -5,6 +5,5 @@ data class Item(
     var sellIn: Int = 0,
     var quality: Int = 0
 ) {
-
     override fun toString() = "$name, $sellIn, $quality"
 }
