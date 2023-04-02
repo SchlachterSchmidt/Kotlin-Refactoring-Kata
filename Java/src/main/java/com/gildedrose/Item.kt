@@ -1,13 +1,5 @@
 package com.gildedrose
 
-open class Item(
-    val name: String,
-    var sellIn: Int = 0,
-    var quality: Int = 0,
-) {
-    override fun toString() = "$name, $sellIn, $quality"
-}
-
 object Aging {
     val standard: () -> Int = { 1 }
     val none: () -> Int = { 0 }
@@ -25,7 +17,7 @@ object Degradation {
 
 object Saturation {
     val standard: (Int) -> Int = { quality: Int ->
-            when {
+        when {
             quality < 0 -> 0
             quality > 50 -> 50
             else -> quality
@@ -34,25 +26,22 @@ object Saturation {
     val none: (Int) -> Int = { it }
 }
 
-class BaseItem(
-    name: String,
-    sellIn: Int,
-    quality: Int,
+class Item(
+    val name: String,
+    var sellIn: Int = 0,
+    var quality: Int = 0,
     private val aging:() -> Int = Aging.standard,
     private val degradation: (Int, Int) -> Int = Degradation.standard,
     private val saturation: (Int) -> Int = Saturation.standard
-) : Item(
-    name,
-    sellIn,
-    quality
 ) {
+    override fun toString() = "$name, $sellIn, $quality"
     fun update() {
         sellIn -= aging()
         quality = saturation(quality - degradation(sellIn, quality))
     }
 }
 
-fun Sulfuras(name: String, sellIn: Int, quality: Int) = BaseItem(
+fun Sulfuras(name: String, sellIn: Int, quality: Int) = Item(
     name,
     sellIn,
     quality,
@@ -61,14 +50,14 @@ fun Sulfuras(name: String, sellIn: Int, quality: Int) = BaseItem(
     saturation = Saturation.none
 )
 
-fun Brie(name: String, sellIn: Int, quality: Int) = BaseItem(
+fun Brie(name: String, sellIn: Int, quality: Int) = Item(
     name,
     sellIn,
     quality,
     degradation = Degradation.standard * -1
 )
 
-fun Pass(name: String, sellIn: Int, quality: Int) = BaseItem(
+fun Pass(name: String, sellIn: Int, quality: Int) = Item(
     name,
     sellIn,
     quality,
@@ -82,7 +71,7 @@ fun Pass(name: String, sellIn: Int, quality: Int) = BaseItem(
     }
 )
 
-fun Conjured(name: String, sellIn: Int, quality: Int) = BaseItem(
+fun Conjured(name: String, sellIn: Int, quality: Int) = Item(
     name,
     sellIn,
     quality,
