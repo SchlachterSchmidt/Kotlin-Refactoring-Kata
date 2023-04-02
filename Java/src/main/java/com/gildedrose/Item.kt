@@ -8,7 +8,12 @@ open class Item(
     override fun toString() = "$name, $sellIn, $quality"
 }
 
-open class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn, quality) {
+open class BaseItem(
+    name: String,
+    sellIn: Int,
+    quality: Int,
+    private val aging: () -> Int = { 1 },
+) : Item(name, sellIn, quality) {
     fun update() {
         sellIn -= aging()
         quality = saturation(quality - degradation(sellIn, quality))
@@ -19,8 +24,6 @@ open class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn
         else -> 1
     }
 
-    protected open fun aging() = 1
-
     protected open fun saturation(quality: Int) = when {
         quality < 0 -> 0
         quality > 50 -> 50
@@ -28,8 +31,16 @@ open class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn
     }
 }
 
-class Sulfuras(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, quality) {
-    override fun aging() = 0
+class Sulfuras(
+    name: String,
+    sellIn: Int,
+    quality: Int,
+) : BaseItem(
+    name,
+    sellIn,
+    quality,
+    aging = { 0 }
+) {
     override fun degradation(sellIn: Int, quality: Int) = 0
     override fun saturation(quality: Int) = quality
 }

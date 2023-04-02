@@ -1,17 +1,14 @@
-package com.gildedrose;
+package com.gildedrose
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class GildedRoseTest {
-
+internal class GildedRoseTest {
     @Test
-    void foo() {
-        Item[] items = new Item[] { new BaseItem("foo", 0, 0) };
-        GildedRose app = new GildedRose(items);
-        app.updateQuality();
-        assertEquals("foo", app.getItems()[0].getName());
+    fun foo() {
+        val items = arrayOf<Item>(BaseItem("foo", 0, 0))
+        val app = GildedRose(items)
+        app.updateQuality()
+        Assertions.assertEquals("foo", app.items[0].name)
     }
-
 }
