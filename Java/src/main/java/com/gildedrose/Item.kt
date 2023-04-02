@@ -13,13 +13,15 @@ open class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn
     fun update() {
         age()
         degrade()
+        saturate()
+    }
 
+    protected open fun age() {
+        sellIn = sellIn - 1
     }
 
     protected open fun degrade() {
-        if (quality > 0) {
-            quality = quality - 1
-        }
+        quality = quality - 1
         if (sellIn < 0) {
             if (quality > 0) {
                 quality -= 1
@@ -27,44 +29,38 @@ open class BaseItem(name: String, sellIn: Int, quality: Int) : Item(name, sellIn
         }
     }
 
-    protected open fun age() {
-        sellIn = sellIn - 1
+    protected open fun saturate() {
+        if (quality < 0) quality = 0
+        if (quality > 50) quality = 50
     }
-
 }
 
 class Sulfuras(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, quality) {
     override fun degrade() {}
     override fun age() {}
+    override fun saturate() {}
 }
 
 class Brie(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, quality) {
     override fun degrade() {
-        if (quality < 50) {
+        quality += 1
+        if (sellIn < 0) {
             quality += 1
         }
-        if (sellIn < 0) {
-            if (quality < 50) {
-                quality += 1
-            }
-        }
     }
-
 }
 
 class Pass(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, quality) {
     override fun degrade() {
-        if (quality < 50) {
-            quality += 1
-            if (sellIn < 10) {
-                if (quality < 50) {
-                    quality += 1
-                }
+        quality += 1
+        if (sellIn < 10) {
+            if (quality < 50) {
+                quality += 1
             }
-            if (sellIn < 5) {
-                if (quality < 50) {
-                    quality += 1
-                }
+        }
+        if (sellIn < 5) {
+            if (quality < 50) {
+                quality += 1
             }
         }
         if (sellIn < 0) {
@@ -72,4 +68,3 @@ class Pass(name: String, sellIn: Int, quality: Int) : BaseItem(name, sellIn, qua
         }
     }
 }
-
