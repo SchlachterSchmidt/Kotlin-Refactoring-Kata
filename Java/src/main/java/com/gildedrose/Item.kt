@@ -1,6 +1,5 @@
 package com.gildedrose
 
-
 data class Item(
     private val name: String,
     private val sellIn: Int = 0,

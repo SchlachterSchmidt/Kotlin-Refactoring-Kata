@@ -1,6 +1,5 @@
 package com.gildedrose
 
-
 object Aging {
     val standard: () -> Int = { 1 }
     val none: () -> Int = { 0 }

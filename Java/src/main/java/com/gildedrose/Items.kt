@@ -1,6 +1,5 @@
 package com.gildedrose
 
-
 fun Sulfuras(name: String, sellIn: Int, quality: Int) = Item(
     name,
     sellIn,
