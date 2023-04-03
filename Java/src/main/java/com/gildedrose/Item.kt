@@ -14,4 +14,17 @@ class Item(
         sellIn -= aging()
         quality = saturation(quality - degradation(sellIn, quality))
     }
+
+    fun updated(): Item {
+        val sellIn = sellIn - aging()
+        val quality = saturation(quality - degradation(sellIn, quality))
+        return Item(
+            name,
+            sellIn,
+            quality,
+            aging,
+            degradation,
+            saturation
+        )
+    }
 }

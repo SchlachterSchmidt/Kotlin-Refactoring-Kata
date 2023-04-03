@@ -27,7 +27,7 @@ class TexttestFixture {
         for (i in 0 until days) {
             out.println("-------- day $i --------")
             out.println("name, sellIn, quality")
-            for (item in items) {
+            for (item in app.items) {
                 out.println(item)
             }
             out.println()
@@ -160,5 +160,4 @@ class TexttestFixture {
 
 
     """.trimIndent()
-
 }
