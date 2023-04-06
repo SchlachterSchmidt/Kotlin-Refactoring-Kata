@@ -1,7 +1,17 @@
-bin
-obj
-*.sln.DotSettings.user
-.vs
-vendor
-.idea
+.idea/
 *.iml
+target/
+
+.classpath
+.project
+bin/
+.settings/
+
+# Gradle
+.gradle
+/build/
+
+# mac
+.DS_Store
+../.DS_Store
+
