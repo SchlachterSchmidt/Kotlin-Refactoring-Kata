@@ -11,3 +11,7 @@ bin/
 .gradle
 /build/
 
+# mac
+.DS_Store
+../.DS_Store
+
