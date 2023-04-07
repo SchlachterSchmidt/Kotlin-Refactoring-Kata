@@ -21,11 +21,10 @@ class ListStockTests {
             Item("banana", now.minusDays(1), 42u),
             Item("kumquat", now.plusDays(1), 101u)
         )
+        val routes = routes(stock) { now }
 
-        val server = Server(stock) { now }
-        val client = server.routes
+        val response = routes(Request(GET, "/"))
 
-        val response = client(Request(GET, "/"))
         approver.assertApproved(response, OK)
     }
 }
