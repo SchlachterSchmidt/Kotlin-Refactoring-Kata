@@ -13,7 +13,10 @@ import java.time.temporal.ChronoUnit.DAYS
 
 private val handlebars = HandlebarsTemplates().HotReload("src/main/kotlin")
 
-fun routes(stock: List<Item>, clock: () -> LocalDate = LocalDate::now) = org.http4k.routing.routes(
+fun routes(
+    stock: List<Item>,
+    clock: () -> LocalDate = LocalDate::now
+) = org.http4k.routing.routes(
     "/" bind GET to {
         val now = clock()
         Response(Status.OK).body(
