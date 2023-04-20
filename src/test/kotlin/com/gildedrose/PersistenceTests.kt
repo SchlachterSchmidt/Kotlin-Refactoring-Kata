@@ -22,22 +22,30 @@ class PersistenceTests {
 
 
     @Test
-    fun `load and save empty file`() {
+    fun `load and save empty stock list`() {
         val stockList = StockList(
             now, emptyList()
         )
 
-        assertEquals(stockList, stockList.toLines().toStockList(defaultLastModified = now.plusSeconds(3600)))
+        assertEquals(stockList, stockList.toLines().toStockList())
+    }
+
+    @Test
+    fun `load empty  file`() {
+        assertEquals(
+            StockList(Instant.EPOCH , emptyList()),
+            emptySequence<String>().toStockList()
+        )
     }
 
     @Test
     fun `load with no LastModified header`() {
         val lines = sequenceOf("# Banana")
         val stockList = StockList(
-            now, emptyList()
+            Instant.EPOCH, emptyList()
         )
 
-        assertEquals(stockList, lines.toStockList(defaultLastModified = now))
+        assertEquals(stockList, lines.toStockList())
     }
 
     @Test
@@ -45,7 +53,7 @@ class PersistenceTests {
         val lines = sequenceOf("# LastModified:")
 
         assertThatThrownBy {
-            lines.toStockList(defaultLastModified = now)
+            lines.toStockList()
         }
             .isInstanceOf(IOException::class.java)
             .hasMessage("Could not parse LastModified header: Text '' could not be parsed at index 0")
@@ -58,35 +66,6 @@ class PersistenceTests {
         val stockList = StockList(now, stock)
         stockList.saveTo(file)
 
-        assertEquals(stockList, file.loadItems(defaultLastModified = now.plusSeconds(3600)))
-    }
-
-    @Test
-    fun `legacy load and save empty file`(@TempDir dir: File) {
-        val file = File(dir, "stock.tsv")
-        val stock = listOf<Item>()
-
-        stock.legacySaveTo(file)
-        assertEquals(stock, file.loadItems(defaultLastModified = now.plusSeconds(3600)))
-    }
-
-    @Test
-    fun `legacy load and save`(@TempDir dir: File) {
-        val file = File(dir, "stock.tsv")
-
-        stock.legacySaveTo(file)
-
-        assertEquals(stock, file.loadItems())
-    }
-}
-
-fun List<Item>.legacySaveTo(file: File) {
-
-    fun Item.toLine() = "$name\t$sellByDate\t$quality"
-
-    file.writer().buffered().use { writer ->
-        forEach { item ->
-            writer.appendLine(item.toLine())
-        }
+        assertEquals(stockList, file.loadItems())
     }
 }
