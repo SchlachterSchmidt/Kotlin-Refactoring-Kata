@@ -1,0 +1,14 @@
+<html lang="en">
+    <body>
+        <h1>April 5, 2023</h1>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Sell By Date</th>
+                <th>Sell By Days</th>
+                <th>Quality</th>
+            </tr>
+            
+        </table>
+    </body>
+</html>

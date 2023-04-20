@@ -18,7 +18,6 @@ fun StockList.saveTo(file: File) {
 fun StockList.toLines(): Sequence<String> = sequenceOf("$lastModifiedHeader $lastModified") +
     items.map { it.toLine() }
 
-
 fun File.loadItems(): StockList = useLines { lines ->
     lines.toStockList()
 }
@@ -32,7 +31,6 @@ fun Sequence<String>.toStockList(): StockList {
 }
 
 private fun Item.toLine() = "$name\t$sellByDate\t$quality"
-
 
 private fun lastModifiedFrom(
     header: List<String>

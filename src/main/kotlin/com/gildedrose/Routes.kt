@@ -1,5 +1,6 @@
 package com.gildedrose
 
+import com.gildedrose.com.gildedrose.StockList
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status
@@ -14,16 +15,17 @@ import java.time.temporal.ChronoUnit.DAYS
 private val handlebars = HandlebarsTemplates().HotReload("src/main/kotlin")
 
 fun routes(
-    stock: List<Item>,
+    stock: () -> StockList,
     clock: () -> LocalDate = LocalDate::now
 ) = org.http4k.routing.routes(
     "/" bind GET to {
         val now = clock()
+        val stockList = stock()
         Response(Status.OK).body(
             handlebars(
                 StockListViewModel(
                     now = dateFormatter.format(now),
-                    items = stock.map { item ->
+                    items = stockList.map { item ->
                         item.toMap(now)
                     }
                 )
