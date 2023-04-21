@@ -6,12 +6,12 @@ import java.time.LocalDate
 
 val now = LocalDate.parse("2023-04-05")
 
-fun emptyStockList() = StockList(
+val emptyStockList = StockList(
     Instant.now(),
     listOf()
 )
 
-fun standardStockList() = StockList(
+val standardStockList = StockList(
     Instant.now(),
     listOf(
         Item("banana", now.minusDays(1), 42u),
