@@ -5,15 +5,16 @@ import java.io.File
 import java.nio.file.Files
 import java.time.LocalDate
 
-class Fixture (
+class Fixture(
     initialStockList: StockList,
     private val now: LocalDate = oct29,
-    private val stockFile: File = Files.createTempFile("stock", ".tsv").toFile()
+    val stockFile: File = Files.createTempFile("stock", ".tsv").toFile(),
 ) {
 
     init {
         save(initialStockList)
     }
+
     val routes = routesFor(stockFile) { now }
 
     fun save(stockList: StockList) {
