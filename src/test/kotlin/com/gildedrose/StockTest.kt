@@ -5,13 +5,15 @@ import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 class StockTest {
     private val initialStockList = standardStockList.copy(
         lastModified = Instant.parse("2022-02-09T23:59:59Z")
     )
     private val fixture = Fixture(initialStockList)
-    private val stock = Stock(fixture.stockFile)
+    private val stock = Stock(fixture.stockFile, ZoneId.of("Europe/London"))
 
     @Test
     fun `loads stock from file`() {
@@ -30,19 +32,20 @@ class StockTest {
 }
 
 
-class Stock(private val stockFile: File) {
+class Stock(
+    private val stockFile: File,
+    private val zone: ZoneId
+) {
     fun stockList(now: Instant): StockList {
         val loaded = stockFile.loadItems()
-        return if (loaded.lastModified.daysBetween(now) == 0L)
+        return if (loaded.lastModified.daysTo(now, zone) == 0L)
             loaded
         else
             loaded.copy(lastModified = now).also { it.saveTo(stockFile) }
     }
 }
 
-private fun Instant.daysBetween(then: Instant): Long = when (then) {
-    Instant.parse("2022-02-10T00:00:00Z") -> 1
-    Instant.parse("2022-02-09T23:59:59Z") -> 0
-    else -> TODO()
-}
+// in the original video lesson there is a whole explanation and tests that are not really relevant for me
+private fun Instant.daysTo(that: Instant, zone: ZoneId): Long =
+    LocalDate.ofInstant(that, zone).toEpochDay() - LocalDate.ofInstant(this, zone).toEpochDay()
 
