@@ -9,13 +9,14 @@ import org.http4k.testing.assertApproved
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.time.Instant
 
 @ExtendWith(ApprovalTest::class)
 class ListStockTests {
 
     @Test
     fun `print non-empty stock list`(approver: Approver) {
-        with(Fixture(standardStockList)) {
+        with(Fixture(standardStockList, Instant.parse("2021-10-29T12:00:00Z"))) {
 
             val response = routes(Request(GET, "/"))
 
@@ -25,7 +26,7 @@ class ListStockTests {
 
     @Test
     fun `list stock sees file updates`(approver: Approver) {
-        with(Fixture(standardStockList)) {
+        with(Fixture(standardStockList, Instant.parse("2021-10-29T12:00:00Z"))) {
             assertEquals(OK, routes(Request(GET, "/")).status)
 
             save(emptyStockList)
