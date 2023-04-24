@@ -1,38 +1,40 @@
 package com.gildedrose
 
 import com.gildedrose.com.gildedrose.StockList
-import org.http4k.core.Method.GET
+import org.http4k.core.HttpHandler
 import org.http4k.core.Response
-import org.http4k.core.Status
-import org.http4k.routing.bind
+import org.http4k.core.Status.Companion.OK
 import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.ViewModel
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle.LONG
 import java.time.temporal.ChronoUnit.DAYS
 
 private val handlebars = HandlebarsTemplates().HotReload("src/main/kotlin")
 
-fun routes(
-    stock: () -> StockList,
-    calendar: () -> LocalDate = LocalDate::now
-) = org.http4k.routing.routes(
-    "/" bind GET to {
-        val now = calendar()
-        val stockList = stock()
-        Response(Status.OK).body(
-            handlebars(
-                StockListViewModel(
-                    now = dateFormatter.format(now),
-                    items = stockList.map { item ->
-                        item.toMap(now)
-                    }
-                )
+fun listHandler(
+    clock: () -> Instant,
+    zoneId: ZoneId,
+    listing: (Instant) -> StockList,
+): HttpHandler = {
+    val now = clock()
+    val today: LocalDate = LocalDate.ofInstant(now, zoneId)
+    val stockList = listing(now)
+
+    Response(OK).body(
+        handlebars(
+            StockListViewModel(
+                now = dateFormatter.format(today),
+                items = stockList.map { item ->
+                    item.toMap(today)
+                }
             )
         )
-    }
-)
+    )
+}
 
 fun Item.daysUntilSellBy(date: LocalDate): Long =
     DAYS.between(date, this.sellByDate)

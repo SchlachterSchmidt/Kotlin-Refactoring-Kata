@@ -1,10 +1,12 @@
 package com.gildedrose
 
 import com.gildedrose.com.gildedrose.Stock
+import org.http4k.core.Method.GET
 import org.http4k.routing.RoutingHttpHandler
+import org.http4k.routing.bind
+import org.http4k.routing.routes
 import java.io.File
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 
 fun main() {
@@ -15,17 +17,18 @@ fun main() {
 
 fun routesFor(
     stockFile: File,
-    calendar: () -> LocalDate = LocalDate::now,
     clock: () -> Instant,
 ): RoutingHttpHandler {
+
+    val londonZoneId = ZoneId.of("Europe/London")
+
     val stock = Stock(
         stockFile = stockFile,
-        zoneId = ZoneId.of("Europe/London"),
+        zoneId = londonZoneId,
         update = ::update
     )
     return routes(
-        stock = {stock.stockList(clock()) },
-        calendar = calendar
+        "/" bind GET to listHandler(clock = clock, zoneId = londonZoneId, listing = stock::stockList)
     )
 }
 
