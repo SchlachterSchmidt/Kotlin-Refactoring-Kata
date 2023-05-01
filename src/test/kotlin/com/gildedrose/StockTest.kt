@@ -2,10 +2,10 @@ package com.gildedrose
 
 import com.gildedrose.com.gildedrose.Stock
 import com.gildedrose.com.gildedrose.StockList
-import com.gildedrose.com.gildedrose.update
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.concurrent.Callable
 import java.util.concurrent.CyclicBarrier
@@ -25,7 +25,7 @@ class StockTest {
         now = initialStockList.lastModified
     )
 
-    private val stock = Stock(fixture.stockFile, ZoneId.of("Europe/London"), ::update)
+    private val stock = Stock(fixture.stockFile, ZoneId.of("Europe/London"), ::simpleUpdateItems)
 
     @Test
     fun `loads stock from file`() {
@@ -96,3 +96,4 @@ class StockTest {
 
 }
 
+private fun  simpleUpdateItems(items: List<Item>, days: Int, on: LocalDate) = items.map { it.copy(quality = it.quality - days) }
