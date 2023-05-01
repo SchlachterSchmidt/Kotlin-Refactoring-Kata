@@ -2,6 +2,7 @@ package com.gildedrose
 
 import com.gildedrose.com.gildedrose.Stock
 import com.gildedrose.com.gildedrose.StockList
+import com.gildedrose.com.gildedrose.update
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
 import java.time.Instant
@@ -14,8 +15,8 @@ class StockTest {
     private val initialStockList = StockList(
         lastModified = Instant.parse("2022-02-09T23:59:59Z"),
         items = listOf(
-            Item("banana", oct29.minusDays(1), 42u),
-            Item("kumquat", oct29.plusDays(1), 101u)
+            Item("banana", oct29.minusDays(1), 42),
+            Item("kumquat", oct29.plusDays(1), 101)
         )
     )
 
@@ -38,8 +39,8 @@ class StockTest {
         val expectedUpdatedResult = StockList(
             lastModified = now,
             items = listOf(
-                Item("banana", oct29.minusDays(1), 41u),
-                Item("kumquat", oct29.plusDays(1), 100u)
+                Item("banana", oct29.minusDays(1), 41),
+                Item("kumquat", oct29.plusDays(1), 100)
             )
         )
 
@@ -53,8 +54,8 @@ class StockTest {
         val expectedUpdatedResult = StockList(
             lastModified = now,
             items = listOf(
-                Item("banana", oct29.minusDays(1), 40u),
-                Item("kumquat", oct29.plusDays(1), 99u)
+                Item("banana", oct29.minusDays(1), 40),
+                Item("kumquat", oct29.plusDays(1), 99)
             )
         )
 
