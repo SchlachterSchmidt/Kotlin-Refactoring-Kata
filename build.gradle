@@ -13,6 +13,8 @@ dependencies {
     implementation "org.http4k:http4k-server-undertow:4.41.3.0"
     implementation "org.http4k:http4k-client-apache:4.41.3.0"
     implementation "org.http4k:http4k-template-handlebars:4.41.3.0"
+    implementation "org.slf4j:slf4j-jdk14:1.7.36"
+
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.assertj:assertj-core:3.24.2'
