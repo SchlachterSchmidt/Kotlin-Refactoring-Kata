@@ -9,12 +9,19 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
     implementation "org.http4k:http4k-core:4.41.3.0"
     implementation "org.http4k:http4k-server-undertow:4.41.3.0"
     implementation "org.http4k:http4k-client-apache:4.41.3.0"
     implementation "org.http4k:http4k-template-handlebars:4.41.3.0"
-    implementation "org.slf4j:slf4j-jdk14:1.7.36"
 
+    implementation 'org.slf4j:slf4j-jdk14:2.0.5'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2'
+    implementation 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.14.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.14.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.assertj:assertj-core:3.24.2'
